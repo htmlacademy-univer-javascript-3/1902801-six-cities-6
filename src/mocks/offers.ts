@@ -24,6 +24,7 @@ export interface Offer {
       longitude: number;
     };
   };
+  isFavorite: boolean;
 }
 
 export const mockOffers: Offer[] = [
@@ -64,6 +65,7 @@ An independent House, strategically located between Rembrand Square and National
         longitude: 4.85309666406198,
       },
     },
+    isFavorite: false,
   },
   {
     id: '2',
@@ -96,6 +98,7 @@ An independent House, strategically located between Rembrand Square and National
         longitude: 4.85309666406198,
       },
     },
+    isFavorite: false,
   },
   {
     id: '3',
@@ -128,6 +131,7 @@ An independent House, strategically located between Rembrand Square and National
         longitude: 4.929309666406198,
       },
     },
+    isFavorite: true,
   },
   {
     id: '4',
@@ -160,5 +164,6 @@ An independent House, strategically located between Rembrand Square and National
         longitude: 4.939309666406198,
       },
     },
+    isFavorite: true,
   },
 ];

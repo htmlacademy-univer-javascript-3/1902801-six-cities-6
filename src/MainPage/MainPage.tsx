@@ -1,13 +1,16 @@
+import { useSelector } from 'react-redux';
 import Map from '../Map';
-import { Offer } from '../mocks/offers';
+import { RootState } from '../store';
 import OfferList from './OfferList';
+import CitiesList from './CitiesList';
 
-interface MainPageProps {
-  offers: Offer[];
-}
-
-export default function MainPage({ offers }: MainPageProps) {
-  const offersCount = offers.length;
+export default function MainPage() {
+  const activeCity = useSelector((state: RootState) => state.app.activeCity);
+  const allOffers = useSelector((state: RootState) => state.app.offers);
+  const offersByCity = allOffers.filter(
+    (offer) => offer.city.name === activeCity,
+  );
+  const offersCount = offersByCity.length;
 
   return (
     <div className="page page--gray page--main">
@@ -52,55 +55,20 @@ export default function MainPage({ offers }: MainPageProps) {
 
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="#">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
-          </section>
-        </div>
+        <CitiesList currentCity={activeCity} />
         <div className="cities">
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {offersCount} places to stay in Amsterdam
+                {offersCount} places to stay in {activeCity}
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
                 <span className="places__sorting-type" tabIndex={0}>
                   Popular
                   <svg className="places__sorting-arrow" width="7" height="4">
-                    <use href="#icon-arrow-select"></use>
+                    <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
                 <ul className="places__options places__options--custom places__options--opened">
@@ -121,10 +89,10 @@ export default function MainPage({ offers }: MainPageProps) {
                   </li>
                 </ul>
               </form>
-              <OfferList offers={offers} />
+              <OfferList offers={allOffers} />
             </section>
             <div className="cities__right-section">
-              <Map places={offers} containerClassName="cities__map map" />
+              <Map places={allOffers} containerClassName="cities__map map" />
             </div>
           </div>
         </div>

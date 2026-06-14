@@ -1,11 +1,13 @@
+import { useSelector } from 'react-redux';
 import OfferCard from '../MainPage/OfferCard';
-import { Offer } from '../mocks/offers';
+import { RootState } from '../store';
+import OfferList from '../MainPage/OfferList';
 
-interface FavoritesPageProps {
-  offers: Offer[];
-}
+export default function FavoritesPage() {
+  const offers = useSelector((s: RootState) => s.app.offers);
 
-export default function FavoritesPage({ offers }: FavoritesPageProps) {
+  const favorites = offers.filter((p) => p.isFavorite);
+
   return (
     <div className="page">
       <header className="header">
@@ -61,9 +63,7 @@ export default function FavoritesPage({ offers }: FavoritesPageProps) {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {offers.map((offer) => (
-                    <OfferCard key={offer.id} offer={offer} />
-                  ))}
+                  <OfferList offers={favorites} />
                 </div>
               </li>
             </ul>

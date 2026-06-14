@@ -1,24 +1,25 @@
 import Map from '../Map';
-import { mockOffers } from '../mocks/offers';
 import { useParams } from 'react-router-dom';
-import NotFoundPage from '../NotFoundPage/NotFoundPage';
 import { mockReviews } from '../mocks/reviews';
 import ReviewSendForm from './ReviewSendForm';
 import ReviewList from './ReviewList';
 import OfferCard from '../MainPage/OfferCard';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import NotFoundPage from '../NotFoundPage/NotFoundPage';
 
 export default function OfferPage() {
   const { id } = useParams();
 
-  const currentOffer = mockOffers.find((offer) => offer.id === id);
+  const offers = useSelector((s: RootState) => s.app.offers);
 
-  if (!currentOffer) return <NotFoundPage />;
+  const offer = offers.find((o) => o.id === id);
 
-  const reviews = mockReviews.filter(
-    (review) => review.offerId === currentOffer.id,
-  );
+  if (!offer) return <NotFoundPage />;
 
-  const nearby = mockOffers.filter((o) => o.id !== id).slice(0, 3);
+  const reviews = mockReviews.filter((review) => review.offerId === id);
+
+  const nearby = offers.filter((o) => o.id !== id).slice(0, 3);
 
   return (
     <div className="page">
@@ -65,7 +66,7 @@ export default function OfferPage() {
         <section className="offer">
           <div className="offer__gallery-container container">
             <div className="offer__gallery">
-              {currentOffer.imagesSources.map((image) => (
+              {offer?.imagesSources.map((image) => (
                 <div className="offer__image-wrapper" key={image}>
                   <img
                     className="offer__image"
@@ -79,49 +80,47 @@ export default function OfferPage() {
           <div className="offer__container container">
             <div className="offer__wrapper">
               <div className="offer__mark">
-                <span>{currentOffer.isPremium ? 'Premium' : ''}</span>
+                <span>{offer.isPremium ? 'Premium' : ''}</span>
               </div>
               <div className="offer__name-wrapper">
-                <h1 className="offer__name">{currentOffer.title}</h1>
+                <h1 className="offer__name">{offer.title}</h1>
                 <button className="offer__bookmark-button button" type="button">
                   <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use href="#icon-bookmark"></use>
+                    <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>
                 </button>
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
-                  <span
-                    style={{ width: `${currentOffer.rating * 20}%` }}
-                  ></span>
+                  <span style={{ width: `${offer.rating * 20}%` }}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
                 <span className="offer__rating-value rating__value">
-                  {currentOffer.rating}
+                  {offer.rating}
                 </span>
               </div>
               <ul className="offer__features">
                 <li className="offer__feature offer__feature--entire">
-                  {currentOffer.type}
+                  {offer.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {currentOffer.bedroomsCount} Bedroom
-                  {currentOffer.bedroomsCount > 1 ? 's' : ''}
+                  {offer.bedroomsCount} Bedroom
+                  {offer.bedroomsCount > 1 ? 's' : ''}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  Max {currentOffer.maxAdults} adult
-                  {currentOffer.maxAdults > 1 ? 's' : ''}
+                  Max {offer.maxAdults} adult
+                  {offer.maxAdults > 1 ? 's' : ''}
                 </li>
               </ul>
               <div className="offer__price">
-                <b className="offer__price-value">&euro;{currentOffer.price}</b>
+                <b className="offer__price-value">&euro;{offer.price}</b>
                 <span className="offer__price-text">&nbsp;night</span>
               </div>
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {currentOffer.inside.map((item) => (
+                  {offer.inside.map((item) => (
                     <li className="offer__inside-item" key={item}>
                       {item}
                     </li>
@@ -134,23 +133,19 @@ export default function OfferPage() {
                   <div className="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
                     <img
                       className="offer__avatar user__avatar"
-                      src={currentOffer.host.avatarUrl}
+                      src={offer.host.avatarUrl}
                       width="74"
                       height="74"
                       alt="Host avatar"
                     />
                   </div>
-                  <span className="offer__user-name">
-                    {currentOffer.host.name}
-                  </span>
+                  <span className="offer__user-name">{offer.host.name}</span>
                   <span className="offer__user-status">
-                    {currentOffer.host.isPro ? 'Pro' : ''}
+                    {offer.host.isPro ? 'Pro' : ''}
                   </span>
                 </div>
                 <div className="offer__description">
-                  <p className="offer__text">
-                    {currentOffer.descriptionBlocks}
-                  </p>
+                  <p className="offer__text">{offer.descriptionBlocks}</p>
                 </div>
               </div>
               <section className="offer__reviews reviews">
