@@ -1,4 +1,4 @@
-interface Review {
+export interface Review {
   id: string;
   author: {
     avatarUrl: string;
