@@ -26,6 +26,5 @@ export const selectCityOffers = createSelector(
   (offers, city) => offers.filter((offer) => offer.city.name === city),
 );
 
-export const selectFavoriteOffers = createSelector([selectOffers], (offers) =>
-  offers.filter((offer) => offer.isFavorite),
-);
+export const selectFavoriteOffers = (state: RootState) =>
+  state[NameSpace.Data].favoriteOffers;

@@ -14,6 +14,7 @@ import {
   selectAuthorizationStatus,
   selectCity,
   selectCityOffers,
+  selectFavoriteOffers,
   selectIsOffersLoading,
   selectUserData,
 } from '../store/selectors';
@@ -36,6 +37,7 @@ export default function MainPage() {
   const isOffersLoading = useSelector(selectIsOffersLoading);
   const authorizationStatus = useSelector(selectAuthorizationStatus);
   const userData = useSelector(selectUserData);
+  const favoriteOffers = useSelector(selectFavoriteOffers);
 
   const dispatch = useDispatch();
 
@@ -91,7 +93,9 @@ export default function MainPage() {
                         <span className="header__user-name user__name">
                           {userData?.email}
                         </span>
-                        <span className="header__favorite-count">3</span>
+                        <span className="header__favorite-count">
+                          {favoriteOffers.length}
+                        </span>
                       </Link>
                     </li>
                     <li className="header__nav-item">

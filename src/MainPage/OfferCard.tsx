@@ -1,5 +1,11 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Offer } from '../types/offer';
+import { selectAuthorizationStatus } from '../store/selectors';
+import { AppDispatch } from '../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { AuthorizationStatus } from '../types/auth';
+import { toggleFavorite } from '../store/apiActions';
 
 interface OfferCardProps {
   offer: Offer;
@@ -20,6 +26,23 @@ export default function OfferCard({
   classNamePrefix = 'cities',
   isActive = false,
 }: OfferCardProps) {
+  const imageWidth = classNamePrefix === 'cities' ? 150 : 260;
+  const imageHeight = classNamePrefix === 'cities' ? 110 : 200;
+
+  const dispatch = useDispatch<AppDispatch>();
+  const authorizationStatus = useSelector(selectAuthorizationStatus);
+  const navigate = useNavigate();
+
+  const handleBookmarkClick = useCallback(() => {
+    if (authorizationStatus !== AuthorizationStatus.Auth) {
+      navigate('/login');
+      return;
+    }
+    dispatch(
+      toggleFavorite({ offerId: offer.id, status: offer.isFavorite ? 0 : 1 }),
+    );
+  }, [authorizationStatus, dispatch, offer.id, offer.isFavorite, navigate]);
+
   return (
     <article
       className={`${classNamePrefix}__card place-card${isActive ? ' place-card--active' : ''}`}
@@ -40,8 +63,8 @@ export default function OfferCard({
           <img
             className="place-card__image"
             src={offer.previewImage}
-            width="260"
-            height="200"
+            width={imageWidth}
+            height={imageHeight}
             alt="Place image"
           />
         </Link>
@@ -57,6 +80,7 @@ export default function OfferCard({
               offer.isFavorite ? 'place-card__bookmark-button--active' : ''
             } button`}
             type="button"
+            onClick={handleBookmarkClick}
           >
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
