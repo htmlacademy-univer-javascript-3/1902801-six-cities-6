@@ -1,3 +1,4 @@
+import Map from '../Map';
 import { Offer } from '../mocks/offers';
 import OfferList from './OfferList';
 
@@ -123,7 +124,7 @@ export default function MainPage({ offers }: MainPageProps) {
               <OfferList offers={offers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <Map places={offers} />
             </div>
           </div>
         </div>
