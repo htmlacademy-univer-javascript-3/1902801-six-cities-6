@@ -1,16 +1,23 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import OfferCard from '../MainPage/OfferCard';
-import { selectFavoriteOffers } from '../store/selectors';
-import { useMemo } from 'react';
+import { selectFavoriteOffers, selectUserData } from '../store/selectors';
+import { useEffect, useMemo } from 'react';
+import { fetchFavorites } from '../store/apiActions';
+import { AppDispatch } from '../store';
 
 export default function FavoritesPage() {
+  const dispatch = useDispatch<AppDispatch>();
   const favoriteOffers = useSelector(selectFavoriteOffers);
-
+  const userData = useSelector(selectUserData);
   const cities = useMemo(
     () => [...new Set(favoriteOffers.map((offer) => offer.city.name))],
     [favoriteOffers],
   );
+
+  useEffect(() => {
+    dispatch(fetchFavorites());
+  }, [dispatch]);
 
   return (
     <div className="page">
@@ -37,7 +44,7 @@ export default function FavoritesPage() {
                   >
                     <div className="header__avatar-wrapper user__avatar-wrapper"></div>
                     <span className="header__user-name user__name">
-                      Oliver.conner@gmail.com
+                      {userData?.email}
                     </span>
                     <span className="header__favorite-count">
                       {favoriteOffers.length}
