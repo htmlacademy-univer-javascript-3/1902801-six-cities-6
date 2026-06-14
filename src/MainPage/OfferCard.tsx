@@ -4,19 +4,28 @@ import { Offer } from '../mocks/offers';
 interface OfferCardProps {
   offer: Offer;
   onHover?: (id: string | undefined) => void;
+  classNamePrefix?: string;
 }
 
-export default function OfferCard({ offer, onHover }: OfferCardProps) {
+export default function OfferCard({
+  offer,
+  onHover,
+  classNamePrefix = 'cities',
+}: OfferCardProps) {
   return (
     <article
-      className="cities__card place-card"
+      className={`${classNamePrefix}__card place-card`}
       onMouseEnter={() => onHover?.(offer.id)}
       onMouseLeave={() => onHover?.(undefined)}
     >
-      <div className="place-card__mark">
-        <span>Premium</span>
-      </div>
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      {offer.isPremium && (
+        <div className="place-card__mark">
+          <span>Premium</span>
+        </div>
+      )}
+      <div
+        className={`${classNamePrefix}__image-wrapper place-card__image-wrapper`}
+      >
         <Link to={`/offer/${offer.id}`}>
           <img
             className="place-card__image"

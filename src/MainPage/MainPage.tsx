@@ -124,7 +124,7 @@ export default function MainPage({ offers }: MainPageProps) {
               <OfferList offers={offers} />
             </section>
             <div className="cities__right-section">
-              <Map places={offers} />
+              <Map places={offers} containerClassName="cities__map map" />
             </div>
           </div>
         </div>

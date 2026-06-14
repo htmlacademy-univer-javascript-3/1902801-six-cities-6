@@ -6,9 +6,16 @@ import 'leaflet/dist/leaflet.css';
 interface MapProps {
   places: Offer[];
   cityName?: string;
+  containerClassName?: string;
+  height?: string;
 }
 
-export default function Map({ places, cityName = 'Amsterdam' }: MapProps) {
+export default function Map({
+  places,
+  cityName = 'Amsterdam',
+  containerClassName,
+  height,
+}: MapProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMap = useRef<L.Map | null>(null);
   const offersLayerRef = useRef<L.LayerGroup | null>(null);
@@ -74,7 +81,14 @@ export default function Map({ places, cityName = 'Amsterdam' }: MapProps) {
     return () => {};
   }, [places, cityName]);
 
+  const styleHeight =
+    typeof height === 'number' ? `${height}px` : (height ?? '100%');
+
   return (
-    <div ref={mapRef} className="cities__map map" style={{ height: '100%' }} />
+    <div
+      ref={mapRef}
+      className={containerClassName}
+      style={{ height: styleHeight }}
+    />
   );
 }
