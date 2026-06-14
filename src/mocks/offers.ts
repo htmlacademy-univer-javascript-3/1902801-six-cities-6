@@ -17,6 +17,13 @@ export interface Offer {
     name: string;
     isPro: boolean;
   };
+  city: {
+    name: string;
+    location: {
+      latitude: number;
+      longitude: number;
+    };
+  };
 }
 
 export const mockOffers: Offer[] = [
@@ -50,6 +57,13 @@ An independent House, strategically located between Rembrand Square and National
       isPro: true,
     },
     price: 120,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.85309666406198,
+      },
+    },
   },
   {
     id: '2',
@@ -74,6 +88,13 @@ An independent House, strategically located between Rembrand Square and National
       avatarUrl: '/img/avatar-angelina.jpg',
       name: 'Angelina',
       isPro: true,
+    },
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3609553943508,
+        longitude: 4.85309666406198,
+      },
     },
   },
   {
@@ -100,6 +121,13 @@ An independent House, strategically located between Rembrand Square and National
       isPro: true,
     },
     price: 132,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3909553943508,
+        longitude: 4.929309666406198,
+      },
+    },
   },
   {
     id: '4',
@@ -125,5 +153,12 @@ An independent House, strategically located between Rembrand Square and National
       isPro: true,
     },
     price: 180,
+    city: {
+      name: 'Amsterdam',
+      location: {
+        latitude: 52.3809553943508,
+        longitude: 4.939309666406198,
+      },
+    },
   },
 ];
